@@ -12,7 +12,10 @@
   </ion-header>
 
   @if (alarms.length === 0) {
-    <div class="empty-state">No alarms set</div>
+    <div class="empty-state">
+      <ion-icon name="alarm-outline"></ion-icon>
+      <p>No alarms set</p>
+    </div>
   } @else {
     <ion-list>
       @for (alarm of alarms; track alarm.id) {

@@ -6,7 +6,7 @@ import {
   ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { add, trashOutline } from 'ionicons/icons';
+import { add, trashOutline, alarmOutline } from 'ionicons/icons';
 import { AlarmService } from './alarm.service';
 import { AlarmModalComponent } from './alarm-modal.component';
 import { Alarm } from './alarm.model';
@@ -31,7 +31,7 @@ export class HomePage implements OnInit {
     private alarmService: AlarmService,
     private modalCtrl: ModalController,
   ) {
-    addIcons({ add, trashOutline });
+    addIcons({ add, trashOutline, alarmOutline });
   }
 
   async ngOnInit() {
