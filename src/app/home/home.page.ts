@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonFab, IonFabButton, IonIcon,
-  IonList, IonItem, IonLabel,
+  IonList, IonItem, IonLabel, IonToggle, IonButton,
   ModalController,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { add } from 'ionicons/icons';
+import { add, trashOutline } from 'ionicons/icons';
 import { AlarmService } from './alarm.service';
 import { AlarmModalComponent } from './alarm-modal.component';
 import { Alarm } from './alarm.model';
@@ -19,7 +19,7 @@ import { Alarm } from './alarm.model';
   imports: [
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonFab, IonFabButton, IonIcon,
-    IonList, IonItem, IonLabel,
+    IonList, IonItem, IonLabel, IonToggle, IonButton,
   ],
 })
 export class HomePage implements OnInit {
@@ -31,20 +31,46 @@ export class HomePage implements OnInit {
     private alarmService: AlarmService,
     private modalCtrl: ModalController,
   ) {
-    addIcons({ add });
+    addIcons({ add, trashOutline });
   }
 
   async ngOnInit() {
-    this.alarms = await this.alarmService.getAll();
+    await this.loadAlarms();
+  }
+
+  private async loadAlarms() {
+    const all = await this.alarmService.getAll();
+    this.alarms = all.sort((a, b) => a.hour !== b.hour ? a.hour - b.hour : a.minute - b.minute);
   }
 
   async openNewAlarm() {
-    const modal = await this.modalCtrl.create({ component: AlarmModalComponent });
+    await this.openModal();
+  }
+
+  async openAlarm(alarm: Alarm) {
+    await this.openModal(alarm);
+  }
+
+  async toggleAlarm(alarm: Alarm, enabled: boolean) {
+    await this.alarmService.save({ ...alarm, enabled });
+    await this.loadAlarms();
+  }
+
+  async deleteAlarm(alarm: Alarm) {
+    await this.alarmService.remove(alarm.id);
+    await this.loadAlarms();
+  }
+
+  private async openModal(alarm?: Alarm) {
+    const modal = await this.modalCtrl.create({
+      component: AlarmModalComponent,
+      componentProps: alarm ? { alarm } : {},
+    });
     await modal.present();
     const { data, role } = await modal.onWillDismiss<Alarm>();
     if (role === 'confirm' && data) {
       await this.alarmService.save(data);
-      this.alarms = await this.alarmService.getAll();
+      await this.loadAlarms();
     }
   }
 

@@ -17,11 +17,19 @@
     <ion-list>
       @for (alarm of alarms; track alarm.id) {
         <ion-item>
-          <ion-label>
+          <ion-label button (click)="openAlarm(alarm)">
             <h2>{{ formatTime(alarm) }}</h2>
             <p>{{ alarm.description || 'No description' }}</p>
             <p>{{ formatRepeat(alarm) }}</p>
           </ion-label>
+          <ion-button slot="end" fill="clear" color="danger" (click)="deleteAlarm(alarm)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+          <ion-toggle
+            slot="end"
+            [checked]="alarm.enabled"
+            (ionChange)="toggleAlarm(alarm, $any($event).detail.checked)"
+          ></ion-toggle>
         </ion-item>
       }
     </ion-list>

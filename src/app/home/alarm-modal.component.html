@@ -5,7 +5,7 @@
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>New Alarm</ion-title>
+    <ion-title>{{ isEdit() ? 'Edit Alarm' : 'New Alarm' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="save()">
         <ion-icon name="checkmark"></ion-icon>
@@ -17,26 +17,29 @@
 <ion-content>
   <ion-datetime
     presentation="time"
-    [value]="timeValue"
+    [value]="timeValue()"
     (ionChange)="onTimeChange($any($event))"
+    style="width: 100%; margin: 0 auto;"
   ></ion-datetime>
 
   <ion-list>
-    <ion-item>
+    <ion-item button (click)="toggleRepeatOnce()">
       <ion-label>Repeat only once</ion-label>
       <ion-checkbox
         slot="end"
-        [checked]="form.repeatOnce"
+        [checked]="form().repeatOnce"
+        (click)="$event.stopPropagation()"
         (ionChange)="onRepeatOnceChange($any($event))"
       ></ion-checkbox>
     </ion-item>
 
-    @if (!form.repeatOnce) {
-      <ion-item>
+    @if (!form().repeatOnce) {
+      <ion-item button (click)="toggleSelectAllDays()">
         <ion-label>Select all days</ion-label>
         <ion-checkbox
           slot="end"
           [checked]="allDaysSelected()"
+          (click)="$event.stopPropagation()"
           (ionChange)="toggleAllDays($any($event))"
         ></ion-checkbox>
       </ion-item>
@@ -57,7 +60,8 @@
       <ion-input
         label="Description"
         labelPlacement="floating"
-        [(ngModel)]="form.description"
+        [ngModel]="form().description"
+        (ngModelChange)="setDescription($event)"
         placeholder="e.g. Wake up"
       ></ion-input>
     </ion-item>

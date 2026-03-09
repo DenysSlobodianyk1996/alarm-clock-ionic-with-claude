@@ -5,4 +5,5 @@ export interface Alarm {
   repeatOnce: boolean;
   days: number[]; // 0=Mon … 6=Sun
   description: string;
+  enabled: boolean;
 }
