@@ -1,0 +1,7 @@
+{
+  "name": "alarm-clock-tmp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
