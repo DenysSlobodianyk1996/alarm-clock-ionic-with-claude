@@ -9,6 +9,9 @@
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
 
+android/*
+ios/*
+
 *.log
 log.txt
 
