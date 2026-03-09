@@ -1,8 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      AlarmClock
-    </ion-title>
+    <ion-title>AlarmClock</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,8 +11,25 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  @if (alarms.length === 0) {
+    <div class="empty-state">No alarms set</div>
+  } @else {
+    <ion-list>
+      @for (alarm of alarms; track alarm.id) {
+        <ion-item>
+          <ion-label>
+            <h2>{{ formatTime(alarm) }}</h2>
+            <p>{{ alarm.description || 'No description' }}</p>
+            <p>{{ formatRepeat(alarm) }}</p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openNewAlarm()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
