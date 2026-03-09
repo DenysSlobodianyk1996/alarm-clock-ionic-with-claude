@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/denysslobodianyk/work/etc/**)",
+      "Bash(npx @ionic/cli@latest start claude-alarm-clock blank --type=angular)"
+    ]
+  }
+}
